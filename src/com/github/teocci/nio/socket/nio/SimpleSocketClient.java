@@ -1,4 +1,4 @@
-package com.github.teocci.nio.socket;
+package com.github.teocci.nio.socket.nio;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

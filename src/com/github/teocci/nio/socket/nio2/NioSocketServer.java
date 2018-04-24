@@ -1,4 +1,4 @@
-package com.github.teocci.nio.socket;
+package com.github.teocci.nio.socket.nio2;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
