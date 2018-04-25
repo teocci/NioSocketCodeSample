@@ -8,6 +8,9 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
+import static java.nio.channels.SelectionKey.OP_READ;
+import static java.nio.channels.SelectionKey.OP_WRITE;
+
 /**
  * Created by teocci.
  *
@@ -15,24 +18,11 @@ import java.util.Iterator;
  */
 public class NonBlockingWRClient implements Runnable
 {
-    private final static String HOSTNAME = "localhost";
-    private final static int PORT = 9093;
+    private final static String HOSTNAME = "127.0.0.1";
+    private final static int PORT = 8511;
 
     private String message = "";
     private Selector selector;
-
-    public static void main(String[] args)
-    {
-        String string1 = "Sending a test message";
-        String string2 = "Second message";
-        NonBlockingWRClient test1 = new NonBlockingWRClient(string1);
-        NonBlockingWRClient test2 = new NonBlockingWRClient(string2);
-        Thread thread = new Thread(test1);
-        Thread thread2 = new Thread(test2);
-        thread.start();
-        //thread2.start();
-    }
-
 
     public NonBlockingWRClient(String message)
     {
@@ -44,12 +34,12 @@ public class NonBlockingWRClient implements Runnable
     {
         SocketChannel channel;
         try {
+            selector = Selector.open();
             channel = SocketChannel.open();
-            channel.connect(new InetSocketAddress(HOSTNAME, PORT));
             channel.configureBlocking(false);
 
-            selector = Selector.open();
             channel.register(selector, SelectionKey.OP_CONNECT);
+            channel.connect(new InetSocketAddress(HOSTNAME, PORT));
 
             while (!Thread.interrupted()) {
                 selector.select(1000);
@@ -122,7 +112,7 @@ public class NonBlockingWRClient implements Runnable
         channel.write(ByteBuffer.wrap(message.getBytes()));
 
         // Lets get ready to read.
-        key.interestOps(SelectionKey.OP_READ);
+        key.interestOps(OP_READ);
     }
 
     private void connect(SelectionKey key) throws IOException
@@ -132,6 +122,18 @@ public class NonBlockingWRClient implements Runnable
             channel.finishConnect();
         }
         channel.configureBlocking(false);
-        channel.register(selector, SelectionKey.OP_WRITE);
+        channel.register(selector, OP_WRITE);
+    }
+
+    public static void main(String[] args)
+    {
+        String string1 = "Sending a test message";
+//        String string2 = "Second message";
+        NonBlockingWRClient test1 = new NonBlockingWRClient(string1);
+//        NonBlockingWRClient test2 = new NonBlockingWRClient(string2);
+        Thread thread = new Thread(test1);
+//        Thread thread2 = new Thread(test2);
+        thread.start();
+//        thread2.start();
     }
 }

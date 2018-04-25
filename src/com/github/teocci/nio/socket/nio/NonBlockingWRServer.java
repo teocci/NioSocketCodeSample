@@ -19,7 +19,7 @@ import java.util.Map;
 public class NonBlockingWRServer implements Runnable
 {
     public final static String HOSTNAME = "127.0.0.1";
-    public final static int PORT = 9093;
+    public final static int PORT = 8511;
     public final static long TIMEOUT = 10000;
 
     private ServerSocketChannel serverChannel;
@@ -45,8 +45,6 @@ public class NonBlockingWRServer implements Runnable
         if (serverChannel != null) return;
 
         try {
-            // This is how you open a Selector
-            selector = Selector.open();
             // This is how you open a ServerSocketChannel
             serverChannel = ServerSocketChannel.open();
             // You MUST configure as non-blocking or else you cannot register the serverChannel to the Selector.
@@ -54,6 +52,8 @@ public class NonBlockingWRServer implements Runnable
             // bind to the address that you will use to Serve.
             serverChannel.socket().bind(new InetSocketAddress(HOSTNAME, PORT));
 
+            // This is how you open a Selector
+            selector = Selector.open();
             /*
              * Here you are registering the serverSocketChannel to accept connection, thus the OP_ACCEPT.
              * This means that you just told your selector that this channel will be used to accept connections.
