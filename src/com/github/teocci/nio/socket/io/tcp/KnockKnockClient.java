@@ -1,4 +1,4 @@
-package com.github.teocci.nio.socket;
+package com.github.teocci.nio.socket.io.tcp;
 
 import java.io.BufferedReader;
 import java.io.IOException;

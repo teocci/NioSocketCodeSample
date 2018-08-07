@@ -1,4 +1,4 @@
-package com.github.teocci.nio.socket;
+package com.github.teocci.nio.socket.io.tcp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by teocci.
